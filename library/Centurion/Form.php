@@ -251,8 +251,8 @@ class Centurion_Form extends Zend_Form implements Centurion_Traits_Traitsable
                     throw new Centurion_Form_Exception(sprintf('Invalid type "%s" provided to getPluginLoader()', $type));
             }
             $this->_loaders[$type] = new Centurion_Loader_PluginLoader(array(
+                'Zend_' . $prefixSegment . '_'      => 'Zend/' . $pathSegment . '/',
                 'Centurion_' . $prefixSegment . '_' => 'Centurion/' . $pathSegment . '/',
-                'Zend_' . $prefixSegment . '_'      => 'Zend/' . $pathSegment . '/'
             ));
         }
         return $this->_loaders[$type];
