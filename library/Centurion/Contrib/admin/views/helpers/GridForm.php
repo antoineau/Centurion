@@ -28,6 +28,17 @@ class Admin_View_Helper_GridForm extends Zend_View_Helper_Abstract
 
         $data['elements'] = (array) $data['elements'];
 
+        foreach($data['elements'] as $elementName) {
+            $formElement = $form->getElement($elementName);
+            if (method_exists($formElement, 'getAllowedPlacement')) {
+                try {
+                    $formElement->isAllowedPlacement($type);
+                } catch(Centurion_Form_Exception $e) {
+                    echo $e->getMessage()."\r\n";
+                }
+            }
+        }
+
         if ('header' === $type) {
             $form->addDisplayGroup($data['elements'], '_header', array('class' => 'form-header'));
             $form->moveElement('_header', Centurion_Form::FIRST);
