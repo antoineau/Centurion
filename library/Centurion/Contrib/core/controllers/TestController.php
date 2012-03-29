@@ -10,32 +10,54 @@ class Core_TestController extends Centurion_Controller_Action
 
         $elements = array(
             array(
-                'text'//, $options
+                'text', //type
+                'texte', //name
+                //$options
             ),
             array(
-                'textarea'
+                'textarea',
+            ),
+            array(
+                'rte',
+            ),
+            array(
+                'datepicker',
+            ),
+            array(
+                'datetimepicker',
+            ),
+            array(
+                'timepicker',
+            ),
+            array(
+                'radio',
             ),
         );
 
-        $decorators = array();
-
-        $options = array('description' => 'Avec description');
+        $options = array('description' => 'Field Description');
 
         foreach($elements as $element)
         {
+            //Element name
             if (!isset($element[1])) {
-                $element[1] = array();
+                $element[1] = $element[0];
             }
 
-            $elementOptions = array_merge($options, $element[1]);
+            //Element option
+            if (!isset($element[2])) {
+                $element[2] = array();
+            }
 
-            $form->addElement($element[0], $element[0].'_ok', $element[1]); //options natives
-            $form->addElement($element[0], $element[0].'_ko', $element[1]);
-            $form->addElement($element[0], $element[0].'_ok_with_desc', $elementOptions); //options spécifiques
-            $form->addElement($element[0], $element[0].'_ko_with_desc', $elementOptions);
+            //Merging options
+            $elementOptions = array_merge($options, $element[2]);
 
-            $form->getElement($element[0].'_ko')->addError($element[0].'_ko');
-            $form->getElement($element[0].'_ko_with_desc')->addError($element[0].'_ko_with_desc');
+            $form->addElement($element[0], $element[1].'_ok', $element[2]); //options natives
+            $form->addElement($element[0], $element[1].'_ko', $element[2]);
+            $form->addElement($element[0], $element[1].'_ok_with_desc', $elementOptions); //options spécifiques
+            $form->addElement($element[0], $element[1].'_ko_with_desc', $elementOptions);
+
+            $form->getElement($element[1].'_ko')->addError('Error Message : '.$element[1].' : ko');
+            $form->getElement($element[1].'_ko_with_desc')->addError('Error Message : '.$element[1].' : ko with desc');
         }
 
         $this->view->form = $form;
